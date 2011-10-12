@@ -8,6 +8,8 @@
   (:import-from :anaphora
                 #:it
                 #:awhen)
+  (:import-from :trivial-types
+                #:type-specifier-p)
   (:export #:generate))
 (in-package :parendoc.generate)
 
@@ -92,6 +94,12 @@
   (list
    (awhen (find-class symbol nil)
      (generate it))
+   (when (type-specifier-p symbol)
+     (section (:title (format nil "[Type] ~(~A~)" symbol))
+       (code-block
+         (format nil "~(~A~)~{ ~(~A~)~}" symbol (swank::type-specifier-arglist symbol)))
+       (awhen (documentation symbol 'type)
+         (paragraph it))))
    (when (fboundp symbol)
      (section (:title (format nil "[~A] ~(~A~)"
                               (cond ((special-operator-p symbol) "Special Operator")
