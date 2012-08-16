@@ -45,12 +45,12 @@
                             (slot-value component 'asdf::components)))))
 
 (defun list-all-packages-defined-in (component)
-  (loop with package-table = (loop for package in (list-all-packages)
-                                   for file = (find-package-file package)
-                                   if file collect `(,file . ,package))
-        for cl-source-file in (list-all-cl-source-files component)
-        for package = (cdr (assoc cl-source-file package-table :test #'string=))
-        if package collect package))
+  (let ((package-table (make-hash-table :test 'equal)))
+    (loop for package in (list-all-packages)
+          for file = (find-package-file package)
+          if file do (push package (gethash file package-table)))
+    (loop for cl-source-file in (list-all-cl-source-files component)
+          append (gethash cl-source-file package-table))))
 
 (defgeneric generate (object))
 
