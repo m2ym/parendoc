@@ -96,8 +96,12 @@
      (generate it))
    (when (type-specifier-p symbol)
      (section (:title (format nil "[Type] ~(~A~)" symbol))
-       (code-block
-         (format nil "~(~A~)~{ ~(~A~)~}" symbol (swank::type-specifier-arglist symbol)))
+       (let ((arglist (swank::type-specifier-arglist symbol)))
+         (unless (listp arglist)
+           ;; arglist might be :NOT-AVAILABLE
+           (setq arglist nil))
+         (code-block
+           (format nil "~(~A~)~{ ~(~A~)~}" symbol arglist)))
        (awhen (documentation symbol 'type)
          (paragraph it))))
    (when (fboundp symbol)
