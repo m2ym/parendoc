@@ -4,7 +4,9 @@
   (:use :cl
         :parendoc.doc
         :parendoc.markdown)
-  (:export #:section
+  (:export #:page-feed
+
+           #:section
            #:section-title
 
            #:text-block

@@ -3,7 +3,9 @@
 (defpackage :parendoc.doc
   (:use :cl
         :parendoc.model)
-  (:export #:section
+  (:export #:page-feed
+
+           #:section
            #:section-title
 
            #:text-block
@@ -24,6 +26,8 @@
            #:image-title
            #:image-address))
 (in-package :parendoc.doc)
+
+(defelement page-feed (element))
 
 (defelement section (element) (title))
 

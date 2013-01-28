@@ -24,6 +24,9 @@
 (defmethod render (format (element element))
   (render format (element-children element)))
 
+(defmethod render (format (page-feed page-feed))
+  (terpri *render-stream*))
+
 (defun render-to-string (format node)
   (with-output-to-string (*render-stream*)
     (render format node)))
