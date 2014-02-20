@@ -41,8 +41,7 @@
   (etypecase component
     (asdf:cl-source-file (list (namestring (asdf:component-pathname component))))
     (asdf:static-file nil)
-    (asdf:component (mapcan #'list-all-cl-source-files
-                            (slot-value component 'asdf::components)))))
+    (asdf:module (mapcan #'list-all-cl-source-files (asdf:module-components component)))))
 
 (defun list-all-packages-defined-in (component)
   (let ((package-table (make-hash-table :test 'equal)))
